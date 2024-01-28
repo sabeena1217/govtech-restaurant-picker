@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Spring Boot Session Example</title>
+</head>
+<body>
+<!--<form >-->
+<!--    <div th:each="user : ${users}">-->
+<!--        <label>-->
+<!--            <input type="radio" th:field="${user.selected}" th:value="${user.userId}"/>-->
+<!--            <span th:text="${user.username}"></span>-->
+<!--        </label>-->
+<!--        <br/>-->
+<!--    </div>-->
+
+<!--    <button type="submit">Submit</button>-->
+<!--</form>-->
+<!--<div>-->
+<!--    <h2>Available Users</h2>-->
+<!--    <ul th:each="user : ${users}">-->
+<!--        <li th:text="${user.username}">msg</li>-->
+<!--    </ul>-->
+<!--</div>-->
+<form th:action="@{/chooseRestaurant/1}" method="post">
+    <h2>Available Users</h2>
+    <ul th:each="usr : ${users}">
+        <li>
+            <label>
+<!--                <input type="checkbox" th:field="${usr.selected}" th:value="${usr.userId}"/>-->
+<!--                <input type="checkbox" />-->
+                <input type="checkbox" data-user-id="${usr.id}" class="user-checkbox" th:action="@{/chooseRestaurant/1}" method="post"/>
+                <span th:text="${usr.username}"></span>
+            </label>
+        </li>
+    </ul>
+<!--    <button type="submit">Submit</button>-->
+</form>
+
+<div>
+    <form th:action="@{/persistMessage}" method="post">
+        <textarea name="msg" cols="40" rows="2"></textarea>
+        <br> <input type="submit" value="Save Message" />
+    </form>
+</div>
+<div>
+    <h2>Messages</h2>
+    <ul th:each="message : ${sessionMessages}">
+        <li th:text="${message}">msg</li>
+    </ul>
+</div>
+<div>
+    <form th:action="@{/destroy}" method="post">
+        <input type="submit" value="Destroy Session" />
+    </form>
+</div>
+</body>
+</html>
