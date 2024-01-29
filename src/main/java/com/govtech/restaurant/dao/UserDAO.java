@@ -15,15 +15,19 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
+@Table(name = "user_data")
 public class UserDAO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long userId;
+
+    @Column(name = "user_name")
     private String username;
 
 //    @OneToMany(cascade = CascadeType.ALL)
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="restaurantId")
+    @JoinColumn(name="restaurant_id")
 //    private List<RestaurantDAO> restaurants = new ArrayList<>();
     private RestaurantDAO restaurant;
 

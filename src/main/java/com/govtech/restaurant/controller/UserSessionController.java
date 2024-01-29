@@ -1,16 +1,19 @@
 package com.govtech.restaurant.controller;
 
+import com.govtech.restaurant.dto.UserDTO;
 import com.govtech.restaurant.service.RestaurantService;
 import com.govtech.restaurant.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import static com.govtech.restaurant.common.Constants.SESSION_ATTRIBUTE_USERS;
 
 
 @Controller
@@ -23,53 +26,21 @@ public class UserSessionController {
     private RestaurantService restaurantService;
 
     @GetMapping("/")
-    public String home(Model model, HttpSession session) {
+    public String home(Model model, HttpServletRequest request) {
         @SuppressWarnings("unchecked")
-        List<String> messages = (List<String>) session.getAttribute("MY_SESSION_MESSAGES");
-
-        if (messages == null) {
-            messages = new ArrayList<>();
-        }
-        model.addAttribute("sessionMessages", messages);
+        List<UserDTO> usersInSession = (List<UserDTO>) request.getSession().getAttribute(SESSION_ATTRIBUTE_USERS);
+//        if (usersInSession == null) {
+            usersInSession = userService.getAllUsers();
+//        }
+        request.getSession().setAttribute(SESSION_ATTRIBUTE_USERS, usersInSession);
+        model.addAttribute(SESSION_ATTRIBUTE_USERS, usersInSession);
 
         return "index";
-    }
-
-//    @PostMapping("/persistMessage")
-//    public String persistMessage(@RequestParam("msg") String msg, HttpServletRequest request) {
-//        @SuppressWarnings("unchecked")
-//        List<String> msgs = (List<String>) request.getSession().getAttribute("MY_SESSION_MESSAGES");
-//        if (msgs == null) {
-//            msgs = new ArrayList<>();
-//            request.getSession().setAttribute("MY_SESSION_MESSAGES", msgs);
-//        }
-//        msgs.add(msg);
-//        request.getSession().setAttribute("MY_SESSION_MESSAGES", msgs);
-//        return "redirect:/";
-//    }
-
-    @PostMapping("/persistMessage")
-    public String persistMessage(@RequestParam("msg") String msg, HttpServletRequest request) {
-        @SuppressWarnings("unchecked")
-        List<String> msgs = (List<String>) request.getSession().getAttribute("MY_SESSION_MESSAGES");
-        if (msgs == null) {
-            msgs = new ArrayList<>();
-            request.getSession().setAttribute("MY_SESSION_MESSAGES", msgs);
-        }
-        msgs.add(msg);
-        request.getSession().setAttribute("MY_SESSION_MESSAGES", msgs);
-        return "redirect:/";
     }
 
     @PostMapping("/destroy")
     public String destroySession(HttpServletRequest request) {
         request.getSession().invalidate();
-        return "redirect:/";
-    }
-
-    @ModelAttribute("users")
-    public String getUser(Model model) {
-        model.addAttribute("users", userService.getAllUsers());
         return "redirect:/";
     }
 

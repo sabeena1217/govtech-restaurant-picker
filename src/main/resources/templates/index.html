@@ -22,33 +22,35 @@
 <!--        <li th:text="${user.username}">msg</li>-->
 <!--    </ul>-->
 <!--</div>-->
-<form th:action="@{/chooseRestaurant/1}" method="post">
+<!--<form th:action="@{/chooseRestaurant/1}" method="post">-->
+<form>
     <h2>Available Users</h2>
     <ul th:each="usr : ${users}">
         <li>
             <label>
 <!--                <input type="checkbox" th:field="${usr.selected}" th:value="${usr.userId}"/>-->
 <!--                <input type="checkbox" />-->
-                <input type="checkbox" data-user-id="${usr.id}" class="user-checkbox" th:action="@{/chooseRestaurant/1}" method="post"/>
-                <span th:text="${usr.username}"></span>
+                <input type="checkbox" data-user-id="${usr.id}" class="user-checkbox"/>
+                <span th:text="${usr.username}" th:field="${usr.selected}" th:value="${usr.userId}"></span>
             </label>
         </li>
     </ul>
-<!--    <button type="submit">Submit</button>-->
+    <button type="submit">Submit</button>
 </form>
 
-<div>
-    <form th:action="@{/persistMessage}" method="post">
-        <textarea name="msg" cols="40" rows="2"></textarea>
-        <br> <input type="submit" value="Save Message" />
-    </form>
-</div>
-<div>
-    <h2>Messages</h2>
-    <ul th:each="message : ${sessionMessages}">
-        <li th:text="${message}">msg</li>
-    </ul>
-</div>
+
+<!--<div>-->
+<!--    <form th:action="@{/persistMessage}" method="post">-->
+<!--        <textarea name="msg" cols="40" rows="2"></textarea>-->
+<!--        <br> <input type="submit" value="Save Message" />-->
+<!--    </form>-->
+<!--</div>-->
+<!--<div>-->
+<!--    <h2>Messages</h2>-->
+<!--    <ul th:each="message : ${sessionMessages}">-->
+<!--        <li th:text="${message}">msg</li>-->
+<!--    </ul>-->
+<!--</div>-->
 <div>
     <form th:action="@{/destroy}" method="post">
         <input type="submit" value="Destroy Session" />
