@@ -3,6 +3,7 @@ package com.govtech.restaurant.controller;
 import com.govtech.restaurant.aop.annotation.SessionInfoInjector;
 import com.govtech.restaurant.dto.UserDTO;
 import com.govtech.restaurant.service.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import static com.govtech.restaurant.common.Constants.*;
 
 @Slf4j
 @Controller
+@Tag(name = "User Session", description = "User Session Management APIs")
 public class SessionController {
 
     @Autowired
