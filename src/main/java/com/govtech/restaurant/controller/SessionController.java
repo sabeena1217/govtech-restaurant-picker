@@ -1,5 +1,6 @@
 package com.govtech.restaurant.controller;
 
+import com.govtech.restaurant.aop.annotation.SessionInfoInjector;
 import com.govtech.restaurant.dto.UserDTO;
 import com.govtech.restaurant.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,15 +26,15 @@ public class SessionController {
     @Autowired
     private UserService userService;
 
+    @SessionInfoInjector(sessionId = "[1].session.id")
     @GetMapping("/")
     public String home(Model model, HttpServletRequest request) {
-        @SuppressWarnings("unchecked")
         // update users in session
         List<UserDTO> usersInSession = userService.getAllUsers();
         request.getSession().setAttribute(SESSION_ATTRIBUTE_USERS, usersInSession);
         model.addAttribute(SESSION_ATTRIBUTE_USERS, usersInSession);
 
-        // update restaurant selection in session
+        // update restaurant selections in session
         List<String> restaurantsSelections = usersInSession.stream()
                 .filter(user -> user.getRestaurantPreferenceName() != null && !user.getRestaurantPreferenceName().isEmpty())
                 .map(UserDTO::getRestaurantPreferenceName)
@@ -44,6 +45,7 @@ public class SessionController {
         return "index";
     }
 
+    @SessionInfoInjector(sessionId = "[1].session.id")
     @PostMapping("/destroy")
     public String destroySession(Model model, HttpServletRequest request) {
 
@@ -64,15 +66,17 @@ public class SessionController {
             // clear selections of users
             userService.clearRestaurantSelectionsOfAllUsers();
 
-            log.info("Session ID:{} | Finalized Restaurant:{}", request.getSession().getId(), finalizedRestaurant);
+            log.info("Finalized Restaurant:{}", finalizedRestaurant);
             request.getSession().invalidate();
         }
         return "redirect:/";
     }
 
+    @SessionInfoInjector(sessionId = "[2].session.id")
     @PostMapping("/chooseRestaurant/{userId}")
     public String chooseRestaurant(@PathVariable Long userId,
-                                   @RequestParam(name = "invited", required = false) Boolean invited) {
+                                   @RequestParam(name = "invited", required = false) Boolean invited,
+                                   HttpServletRequest request) {
         if (invited) log.info("User Id:{} is invited...", userId);
         else log.info("User Id:{} invitation reverted...", userId);
         userService.updateUser(userId, invited);
