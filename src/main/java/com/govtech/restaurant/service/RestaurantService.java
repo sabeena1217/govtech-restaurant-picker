@@ -2,7 +2,6 @@ package com.govtech.restaurant.service;
 
 import com.govtech.restaurant.common.RestaurantUtil;
 import com.govtech.restaurant.dao.RestaurantDAO;
-import com.govtech.restaurant.dao.UserDAO;
 import com.govtech.restaurant.dto.RestaurantDTO;
 import com.govtech.restaurant.repository.RestaurantRepository;
 import jakarta.persistence.EntityNotFoundException;

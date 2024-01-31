@@ -14,7 +14,7 @@ public class RestaurantUtil {
                 .build();
     }
 
-    public RestaurantDAO mapDTOToDAO(RestaurantDTO restaurantDTO){
+    public RestaurantDAO mapDTOToDAO(RestaurantDTO restaurantDTO) {
         return RestaurantDAO.builder()
                 .restaurantId(restaurantDTO.getRestaurantId())
                 .restaurantName(restaurantDTO.getRestaurantName())

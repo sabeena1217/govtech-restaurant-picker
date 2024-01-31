@@ -84,4 +84,10 @@ public class UserService {
         userRepository.save(userDAO);
     }
 
+    public void clearRestaurantSelectionsOfAllUsers() {
+        List<UserDAO> allUsers = userRepository.findAll();
+        allUsers.forEach(user -> user.setRestaurant(null));
+        userRepository.saveAll(allUsers);
+    }
+
 }

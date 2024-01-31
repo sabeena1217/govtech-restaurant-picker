@@ -5,24 +5,6 @@
     <title>Spring Boot Session Example</title>
 </head>
 <body>
-<!--<form >-->
-<!--    <div th:each="user : ${users}">-->
-<!--        <label>-->
-<!--            <input type="radio" th:field="${user.selected}" th:value="${user.userId}"/>-->
-<!--            <span th:text="${user.username}"></span>-->
-<!--        </label>-->
-<!--        <br/>-->
-<!--    </div>-->
-
-<!--    <button type="submit">Submit</button>-->
-<!--</form>-->
-<!--<div>-->
-<!--    <h2>Available Users</h2>-->
-<!--    <ul th:each="user : ${users}">-->
-<!--        <li th:text="${user.username}">msg</li>-->
-<!--    </ul>-->
-<!--</div>-->
-<!--<form th:action="@{/chooseRestaurant/1}" method="post">-->
 <form>
     <h2>Available Users</h2>
     <ul th:each="usr : ${users}">
@@ -37,14 +19,11 @@
             </label>
         </li>
     </ul>
-    <button type="submit">Submit</button>
 </form>
 <script>
     function task(e, userId) {
         if (e.target.checked) {
-            // do post request with 1 in parameter
-            console.log("do post request with 1 in parameter ", userId);
-            // console.log("do post request with 1 in parameter ");
+            console.log("user invitation reverted ", userId);
             fetch("http://localhost:8080/chooseRestaurant/" + userId + "?invited=true", {
                 method: "POST",
                 // body: JSON.stringify({
@@ -59,9 +38,7 @@
                 .then((response) => response.json())
                 .then((json) => console.log(json));
         } else {
-            ///do post request with 0 parameter
-            console.log("do post request with 0 parameter");
-            // console.log("do post request with 1 in parameter ");
+            console.log("user invited ", userId);
             fetch("http://localhost:8080/chooseRestaurant/" + userId + "?invited=false", {
                 method: "POST",
                 // body: JSON.stringify({
@@ -79,18 +56,6 @@
     }
 </script>
 
-<!--<div>-->
-<!--    <form th:action="@{/persistMessage}" method="post">-->
-<!--        <textarea name="msg" cols="40" rows="2"></textarea>-->
-<!--        <br> <input type="submit" value="Save Message" />-->
-<!--    </form>-->
-<!--</div>-->
-<!--<div>-->
-<!--    <h2>Messages</h2>-->
-<!--    <ul th:each="message : ${sessionMessages}">-->
-<!--        <li th:text="${message}">msg</li>-->
-<!--    </ul>-->
-<!--</div>-->
 <div>
     <form th:action="@{/destroy}" method="post">
         <input type="submit" value="Destroy Session"/>

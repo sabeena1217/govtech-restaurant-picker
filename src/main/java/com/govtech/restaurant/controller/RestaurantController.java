@@ -8,8 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("api/v1/restaurant")
 public class RestaurantController {
@@ -27,13 +25,6 @@ public class RestaurantController {
             return new ResponseEntity<>("Error adding restaurant: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-//    @GetMapping("/get")
-//    public ResponseEntity<List<RestaurantDTO>> getUser() {
-//        List<RestaurantDTO> allUsers = restaurantService.getAllRestaurants();
-//        return new ResponseEntity<>(allUsers, HttpStatus.CREATED);
-//    }
-
 
     @DeleteMapping("/delete/{restaurantId}")
     public ResponseEntity<String> deleteUser(@PathVariable Long restaurantId) {

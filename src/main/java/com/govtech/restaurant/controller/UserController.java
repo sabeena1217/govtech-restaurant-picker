@@ -27,13 +27,6 @@ public class UserController {
             return new ResponseEntity<>("Error adding user: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-//
-//    @GetMapping("/get")
-//    public ResponseEntity<List<UserDTO>> getUser() {
-//        List<UserDTO> allUsers = userService.getAllUsers();
-//        return new ResponseEntity<>(allUsers, HttpStatus.CREATED);
-//    }
-
 
     @DeleteMapping("/delete/{userId}")
     public ResponseEntity<String> deleteUser(@PathVariable Long userId) {
@@ -44,14 +37,5 @@ public class UserController {
             return new ResponseEntity<>("Error deleting user: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-//    @PostMapping("/chooseRestaurant/{userId}")
-//    public ResponseEntity<String> chooseRestaurant(
-//            @PathVariable Long userId,
-//            @RequestParam(name = "invited", required = false) Boolean invited) {
-//        log.info("test test " + userId + " " + invited);
-//        userService.updateUser(userId, invited);
-//        return new ResponseEntity<>("",HttpStatus.OK);
-//    }
 
 }

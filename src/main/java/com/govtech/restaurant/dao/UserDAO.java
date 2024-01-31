@@ -6,9 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 @Data
 @NoArgsConstructor
@@ -25,10 +22,8 @@ public class UserDAO {
     @Column(name = "user_name")
     private String username;
 
-//    @OneToMany(cascade = CascadeType.ALL)
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="restaurant_id")
-//    private List<RestaurantDAO> restaurants = new ArrayList<>();
+    @JoinColumn(name = "restaurant_id")
     private RestaurantDAO restaurant;
 
     public Long getUserId() {
