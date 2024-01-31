@@ -26,7 +26,7 @@ public class UserDAO {
     private String username;
 
 //    @OneToMany(cascade = CascadeType.ALL)
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="restaurant_id")
 //    private List<RestaurantDAO> restaurants = new ArrayList<>();
     private RestaurantDAO restaurant;

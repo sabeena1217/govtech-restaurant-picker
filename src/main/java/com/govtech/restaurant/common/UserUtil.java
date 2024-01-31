@@ -1,22 +1,17 @@
 package com.govtech.restaurant.common;
 
-import com.govtech.restaurant.dto.RestaurantDTO;
-import lombok.experimental.UtilityClass;
-import com.govtech.restaurant.dto.UserDTO;
 import com.govtech.restaurant.dao.UserDAO;
-import org.springframework.ui.Model;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import com.govtech.restaurant.dto.UserDTO;
+import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class UserUtil {
 
-     public UserDTO mapDAOToDTO(UserDAO restaurantDAO) {
+    public UserDTO mapDAOToDTO(UserDAO userDAO) {
         return UserDTO.builder()
-                .userId(restaurantDAO.getUserId())
-                .username(restaurantDAO.getUsername())
+                .userId(userDAO.getUserId())
+                .username(userDAO.getUsername())
+                .restaurantPreferenceName(userDAO.getRestaurant() != null ? userDAO.getRestaurant().getRestaurantName() : null)
                 .build();
     }
 

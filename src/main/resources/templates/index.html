@@ -28,16 +28,56 @@
     <ul th:each="usr : ${users}">
         <li>
             <label>
-<!--                <input type="checkbox" th:field="${usr.selected}" th:value="${usr.userId}"/>-->
-<!--                <input type="checkbox" />-->
-                <input type="checkbox" data-user-id="${usr.id}" class="user-checkbox"/>
-                <span th:text="${usr.username}" th:field="${usr.selected}" th:value="${usr.userId}"></span>
+                <!--                <input type="checkbox" th:field="${usr.selected}" th:value="${usr.userId}"/>-->
+                <!--                <input type="checkbox" />-->
+                <input type="checkbox" data-user-id="${usr.id}" class="user-checkbox"
+                       th:onclick="task(event, [[${usr.userId}]] );"/>
+                <!--                <span th:text="${usr.username}"  ></span>-->
+                <span th:text="${usr.username + (usr.restaurantPreferenceName != null ? ' - ' + usr.restaurantPreferenceName : '')}"></span>
             </label>
         </li>
     </ul>
     <button type="submit">Submit</button>
 </form>
-
+<script>
+    function task(e, userId) {
+        if (e.target.checked) {
+            // do post request with 1 in parameter
+            console.log("do post request with 1 in parameter ", userId);
+            // console.log("do post request with 1 in parameter ");
+            fetch("http://localhost:8080/chooseRestaurant/" + userId + "?invited=true", {
+                method: "POST",
+                // body: JSON.stringify({
+                //     userId: 1,
+                //     title: "Fix my bugs",
+                //     completed: false
+                // }),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                }
+            })
+                .then((response) => response.json())
+                .then((json) => console.log(json));
+        } else {
+            ///do post request with 0 parameter
+            console.log("do post request with 0 parameter");
+            // console.log("do post request with 1 in parameter ");
+            fetch("http://localhost:8080/chooseRestaurant/" + userId + "?invited=false", {
+                method: "POST",
+                // body: JSON.stringify({
+                //     userId: 1,
+                //     title: "Fix my bugs",
+                //     completed: false
+                // }),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                }
+            })
+                .then((response) => response.json())
+                .then((json) => console.log(json));
+        }
+    }
+</script>
 
 <!--<div>-->
 <!--    <form th:action="@{/persistMessage}" method="post">-->
@@ -53,7 +93,7 @@
 <!--</div>-->
 <div>
     <form th:action="@{/destroy}" method="post">
-        <input type="submit" value="Destroy Session" />
+        <input type="submit" value="Destroy Session"/>
     </form>
 </div>
 </body>

@@ -3,11 +3,13 @@ package com.govtech.restaurant.controller;
 import com.govtech.restaurant.dao.UserDAO;
 import com.govtech.restaurant.dto.UserDTO;
 import com.govtech.restaurant.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping("api/v1/user")
 public class UserController {
@@ -43,6 +45,13 @@ public class UserController {
         }
     }
 
-
+//    @PostMapping("/chooseRestaurant/{userId}")
+//    public ResponseEntity<String> chooseRestaurant(
+//            @PathVariable Long userId,
+//            @RequestParam(name = "invited", required = false) Boolean invited) {
+//        log.info("test test " + userId + " " + invited);
+//        userService.updateUser(userId, invited);
+//        return new ResponseEntity<>("",HttpStatus.OK);
+//    }
 
 }

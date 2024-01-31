@@ -1,12 +1,14 @@
 package com.govtech.restaurant.service;
 
-import com.govtech.restaurant.common.Constants;
+import com.govtech.restaurant.common.RestaurantUtil;
 import com.govtech.restaurant.common.UserUtil;
+import com.govtech.restaurant.dao.RestaurantDAO;
 import com.govtech.restaurant.dao.UserDAO;
 import com.govtech.restaurant.dto.RestaurantDTO;
 import com.govtech.restaurant.dto.UserDTO;
 import com.govtech.restaurant.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class UserService {
 
@@ -48,27 +51,37 @@ public class UserService {
         }
     }
 
-    private void saveRestaurantChoiceOfUser(Long userId, Long restaurantId) {
-        UserDAO userById = getUserById(userId);
-        userById.setRestaurant(restaurantService.getRestaurantById(restaurantId));
+    public void updateUser(Long userId, Boolean invited) {
+        if (invited) {
+            setRandomRestaurantSelectionToUser(userId);
+        } else {
+            saveRestaurantChoiceOfUser(userId, null);
+        }
     }
 
-    public void setRandomRestaurantSelectionToUser(UserDTO userDTO) {
+    public void setRandomRestaurantSelectionToUser(Long userId) {
+        // retrieve all the available restaurants from DB
         List<RestaurantDTO> restaurants = restaurantService.getAllRestaurants();
         if (!restaurants.isEmpty()) {
             Collections.shuffle(restaurants, new Random());
             RestaurantDTO randomRestaurant = restaurants.get(0);
-            userDTO.setRestaurantPreferenceName(randomRestaurant.getRestaurantName());
-            saveRestaurantChoiceOfUser(userDTO.getUserId(), randomRestaurant.getRestaurantId());
+            saveRestaurantChoiceOfUser(userId, randomRestaurant);
         } else {
-            userDTO.setRestaurantPreferenceName(Constants.NO_IDEA);
-            saveRestaurantChoiceOfUser(userDTO.getUserId(), 0L);
+            log.warn("No restaurants available...");
         }
     }
 
-    public void updateUser(Long userId) {
-        UserDAO userById = getUserById(userId);
-        UserDTO userDTO = UserUtil.mapDAOToDTO(userById);
-        setRandomRestaurantSelectionToUser(userDTO);
+    private void saveRestaurantChoiceOfUser(Long userId, RestaurantDTO restaurantDTO) {
+        UserDAO userDAO = getUserById(userId);
+        RestaurantDAO restaurantDAO = null;
+        if (restaurantDTO != null) {
+            restaurantDAO = RestaurantUtil.mapDTOToDAO(restaurantDTO);
+            log.info("User Id:{} | Selected restaurant:{}", userId, restaurantDTO.getRestaurantName());
+        } else {
+            log.info("User Id:{} | Restaurant selection reverted..", userId);
+        }
+        userDAO.setRestaurant(restaurantDAO);
+        userRepository.save(userDAO);
     }
+
 }
