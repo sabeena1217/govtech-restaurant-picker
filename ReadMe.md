@@ -6,12 +6,9 @@ This is developed using
 - H2 database
 - OpenAPI for documentation
 
-Moreover, I have used spring-sessions to facilitate the session management
-
-By default, the web application is hosted in http://localhost:8080/
-
-For API Swagger Definitions
-http://localhost:8080/swagger-ui/index.html
+- Moreover, I have used spring-sessions to facilitate the session management
+- By default, the web application is hosted in http://localhost:8080/
+- For API Swagger Definitions http://localhost:8080/swagger-ui/index.html
 
 ##Logic 
 - I have introduced a database script, to load the initial users and restaurants to the database. 
