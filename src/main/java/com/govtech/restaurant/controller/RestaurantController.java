@@ -3,6 +3,11 @@ package com.govtech.restaurant.controller;
 import com.govtech.restaurant.dao.RestaurantDAO;
 import com.govtech.restaurant.dto.RestaurantDTO;
 import com.govtech.restaurant.service.RestaurantService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +23,13 @@ public class RestaurantController {
     private RestaurantService restaurantService;
 
     @PostMapping("/add")
-    public ResponseEntity<String> addUser(@RequestBody RestaurantDTO restaurantDTO) {
+    @Operation(summary = "Add restaurant", description = "This endpoint allows you to add restaurants")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success Response", content = @Content(schema = @Schema(implementation = String.class), mediaType = "application/json")),
+            @ApiResponse(responseCode = "400", description = "Invalid Request", content = @Content(schema = @Schema(implementation = String.class), mediaType = "application/json")),
+            @ApiResponse(responseCode = "500", description = "Internal System Error", content = @Content(schema = @Schema(implementation = String.class), mediaType = "application/json")),
+    })
+    public ResponseEntity<String> addRestaurant(@RequestBody RestaurantDTO restaurantDTO) {
         try {
             RestaurantDAO newRestaurant = RestaurantDAO.builder().restaurantName(restaurantDTO.getRestaurantName()).build();
             restaurantService.addRestaurant(newRestaurant);
@@ -29,7 +40,13 @@ public class RestaurantController {
     }
 
     @DeleteMapping("/delete/{restaurantId}")
-    public ResponseEntity<String> deleteUser(@PathVariable Long restaurantId) {
+    @Operation(summary = "Delete restaurant", description = "This endpoint allows you to delete restaurants")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success Response", content = @Content(schema = @Schema(implementation = String.class), mediaType = "application/json")),
+            @ApiResponse(responseCode = "400", description = "Invalid Request", content = @Content(schema = @Schema(implementation = String.class), mediaType = "application/json")),
+            @ApiResponse(responseCode = "500", description = "Internal System Error", content = @Content(schema = @Schema(implementation = String.class), mediaType = "application/json")),
+    })
+    public ResponseEntity<String> deleteRestaurant(@PathVariable Long restaurantId) {
         try {
             restaurantService.deleteRestaurantById(restaurantId);
             return new ResponseEntity<>("User deleted successfully", HttpStatus.OK);
